@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: AnimalCare
+  cloud:
+    config:
+      enabled: false
+  datasource:
+    url: jdbc:postgresql://localhost:5435/animalCare
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: always
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceId: AUTO
+          jobStore:
+            useDBLocks: true
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+            useProperties: false
+            tablePrefix: QRTZ_
+            clusterCheckinInterval: 5000
+            isClustered: true
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool
+            threadCount: 10
+            threadsInheritContextClassLoaderOfInitializingThread: true
+    auto-startup: true
+logging.level.org.quartz : DEBUG
+server:
+  port: 8086
+eureka:
+  client:
+    enabled: false
