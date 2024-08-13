@@ -1,6 +1,7 @@
 package com.github.aclijpio.animalcare.configs;
 
-import org.quartz.*;
+import org.quartz.JobBuilder;
+import org.quartz.JobDetail;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
