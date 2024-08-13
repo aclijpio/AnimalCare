@@ -1,17 +1,17 @@
-package com.github.aclijpio.animalcare.services;
+package com.github.aclijpio.animalcare.services.impl;
 
 
 import com.github.aclijpio.animalcare.dtos.request.ActionRequest;
 import com.github.aclijpio.animalcare.dtos.response.ActionResponse;
 import com.github.aclijpio.animalcare.exceptions.ActionCreationException;
+import com.github.aclijpio.animalcare.exceptions.ActionNotFoundException;
+import com.github.aclijpio.animalcare.mappers.ActionMapper;
+import com.github.aclijpio.animalcare.services.ScheduleActionService;
 import com.github.aclijpio.animalcare.utils.CronUtil;
 import lombok.RequiredArgsConstructor;
 import org.quartz.*;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.List;
 
 @Service
@@ -20,7 +20,9 @@ public class ScheduleActionServiceImpl implements ScheduleActionService {
 
     private final Scheduler scheduler;
     private final JobDetail jobDetail;
+    private final ActionMapper actionMapper;
 
+    @Override
     public void createAction(ActionRequest action) {
         Trigger trigger = TriggerBuilder.newTrigger()
                 .forJob(jobDetail)
@@ -37,30 +39,27 @@ public class ScheduleActionServiceImpl implements ScheduleActionService {
             throw new ActionCreationException("Failed to create action", e);
         }
     }
-    public List<ActionResponse> findAllActions() {
+
+    @Override
+    public List<ActionResponse> getAllActions() {
         try {
             List<? extends Trigger> triggerList = scheduler.getTriggersOfJob(jobDetail.getKey());
 
-            return triggerList.stream().map(trigger -> {
-
-                LocalTime nextTime = trigger.getNextFireTime().toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
-
-                LocalTime currentTime = LocalTime.now();
-                long minutesDifference  = Duration.between(currentTime, nextTime).toMinutes();
-
-
-
-               return ActionResponse.builder()
-                       .name(trigger.getKey().getName())
-                       .time(nextTime)
-                       .minutesLeft(minutesDifference)
-                       .build();
-            }).toList();
-
-
+            return triggerList.stream().map(actionMapper::toDto).toList();
         } catch (SchedulerException e) {
-            throw new RuntimeException(e);
+            throw new ActionCreationException("Failed to find actions", e);
         }
     }
+
+    @Override
+    public ActionResponse findActionByName(String actionName) {
+        try {
+            TriggerKey triggerKey = TriggerKey.triggerKey(actionName);
+            return actionMapper.toDto(scheduler.getTrigger(triggerKey));
+        } catch (SchedulerException e) {
+            throw new ActionNotFoundException("Action not found with name: " + actionName);
+        }
+    }
+
 
 }

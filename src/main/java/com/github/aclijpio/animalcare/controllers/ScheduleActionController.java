@@ -2,11 +2,10 @@ package com.github.aclijpio.animalcare.controllers;
 
 import com.github.aclijpio.animalcare.dtos.request.ActionRequest;
 import com.github.aclijpio.animalcare.dtos.response.ActionResponse;
-import com.github.aclijpio.animalcare.services.ScheduleActionServiceImpl;
+import com.github.aclijpio.animalcare.services.ScheduleActionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -14,11 +13,11 @@ import java.util.List;
 @RequestMapping("/schedules/actions")
 public class ScheduleActionController {
 
-    private final ScheduleActionServiceImpl service;
+    private final ScheduleActionService service;
 
     @GetMapping
     List<ActionResponse> getAllActions() {
-        return service.findAllActions();
+        return service.getAllActions();
     }
 
     @GetMapping("current")
