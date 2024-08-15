@@ -26,16 +26,19 @@ public class ScheduleActionServiceImpl implements ScheduleActionService {
     public void createAction(ActionRequest action) {
         Trigger trigger = TriggerBuilder.newTrigger()
                 .forJob(jobDetail)
-                .withIdentity(action.getName())
-                .withSchedule(CronScheduleBuilder.cronSchedule(CronUtil.UTIL.convertLocalTimeToCron(action.getTime())))
-                .withDescription(action.getDescription())
+                .withIdentity(action.name())
+                .withSchedule(CronScheduleBuilder.cronSchedule(CronUtil.UTIL.convertLocalTimeToCron(action.time())))
+                .withDescription(action.description())
                 .build();
 
         try {
             scheduler.scheduleJob(trigger);
         } catch (ObjectAlreadyExistsException e) {
-            throw new ActionCreationException("Failed to create action: " + action.getName() + "because it already exists.", e);
+            throw new ActionCreationException("Failed to create action: " + action.name() + "because it already exists.", e);
         } catch (SchedulerException e) {
+
+            System.out.println(e.getMessage());
+
             throw new ActionCreationException("Failed to create action", e);
         }
     }
@@ -59,6 +62,34 @@ public class ScheduleActionServiceImpl implements ScheduleActionService {
         } catch (SchedulerException e) {
             throw new ActionNotFoundException("Action not found with name: " + actionName);
         }
+    }
+
+    @Override
+    public ActionResponse getCurrentAction() {
+
+
+
+        return null;
+    }
+
+    @Override
+    public ActionResponse getNextAction() {
+        return null;
+    }
+
+    @Override
+    public ActionResponse getPreviousAction() {
+        return null;
+    }
+
+    @Override
+    public void updateAction(ActionRequest action) {
+
+    }
+
+    @Override
+    public void deleteAction(String actionName) {
+
     }
 
 

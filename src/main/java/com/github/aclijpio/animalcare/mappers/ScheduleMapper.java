@@ -8,5 +8,5 @@ import org.mapstruct.Mapper;
 
 
 @Mapper(config = MapStructConfig.class)
-public interface SchedulerMapper extends BaseMapper<Schedule, ScheduleDto> {
+public interface ScheduleMapper extends BaseMapper<Schedule, ScheduleDto> {
 }

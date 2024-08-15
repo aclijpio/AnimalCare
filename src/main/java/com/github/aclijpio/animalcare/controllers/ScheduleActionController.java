@@ -35,8 +35,8 @@ public class ScheduleActionController {
 
     }
 
-    @GetMapping("{id}")
-    void getActionById(@PathVariable Long id){
+    @GetMapping("{name}")
+    void getActionById(@PathVariable("name") String actionName){
 
     }
 
@@ -47,9 +47,6 @@ public class ScheduleActionController {
 
     @PostMapping()
     void addAction(@RequestBody ActionRequest action){
-
-        System.out.println(action);
-
         service.createAction(action);
     }
 
