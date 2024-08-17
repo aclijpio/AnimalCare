@@ -6,8 +6,8 @@ import com.github.aclijpio.animalcare.exceptions.ScheduleNotFoundException;
 import com.github.aclijpio.animalcare.mappers.ScheduleMapper;
 import com.github.aclijpio.animalcare.repositories.ScheduleRepository;
 import com.github.aclijpio.animalcare.services.impl.ScheduleServiceImpl;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -28,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class ScheduleServiceTest {
 
     @Autowired
-
     private ScheduleRepository repository;
     @Autowired
     private ScheduleMapper mapper;
@@ -41,7 +40,6 @@ class ScheduleServiceTest {
             "postgres:latest"
     );
 
-
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry){
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
@@ -49,7 +47,6 @@ class ScheduleServiceTest {
         registry.add("spring.datasource.password", postgres::getPassword);
         registry.add("spring.jpa.generate-ddl", () -> true);
         registry.add("spring.jpa.properties.hibernate.dialect", () -> "org.hibernate.dialect.PostgreSQLDialect");
-
     }
 
     @BeforeEach
@@ -65,7 +62,6 @@ class ScheduleServiceTest {
         repository.save(schedule2);
 
         List<ScheduleDto> schedules = service.getAllSchedules();
-
         assertEquals(2, schedules.size());
     }
 

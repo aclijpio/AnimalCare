@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <File name="JsonFile" fileName="logs/error-app-log.json">
+            <JsonLayout complete="true" compact="true">
+                <KeyValuePair key="timestamp" value="$${date:yyyy-MM-dd'T'HH:mm:ss.SSSZ}"/>
+                <KeyValuePair key="level" value="%level"/>
+                <KeyValuePair key="logger" value="%logger"/>
+                <KeyValuePair key="thread" value="%thread"/>
+                <KeyValuePair key="message" value="%message"/>
+                <KeyValuePair key="exception" value="%ex{full}"/>
+            </JsonLayout>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="JsonFile"/>
+        </Root>
+    </Loggers>
+</Configuration>

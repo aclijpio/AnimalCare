@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 @Mapper(config = MapStructConfig.class)
 public interface ActionMapper {
-    @Mapping(source = "startTime", target = "time", qualifiedByName = "convertToTime")
+    @Mapping(source = "nextFireTime", target = "time", qualifiedByName = "convertToTime")
     @Mapping(source = "key.name", target = "name")
     @Mapping(source = "nextFireTime", target = "minutesLeft", qualifiedByName = "calculateMinutesLeft")
     ActionResponse toDto(Trigger entity);

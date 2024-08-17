@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/schedules/actions")
+@RequestMapping("schedules/actions")
 public class ScheduleActionController {
 
     private final ScheduleActionService service;
@@ -21,38 +21,38 @@ public class ScheduleActionController {
     }
 
     @GetMapping("current")
-    void getCurrentActionSchedule(){
-
+    ActionResponse getCurrentActionSchedule(){
+        return service.getCurrentAction();
     }
 
     @GetMapping("prev")
-    void getPreviousActionSchedule(){
-
+    ActionResponse getPreviousActionSchedule(){
+        return service.getPreviousAction();
     }
 
     @GetMapping("next")
-    void getNextActionSchedule(){
-
+    ActionResponse getNextActionSchedule(){
+        return service.getNextAction();
     }
 
-    @GetMapping("{name}")
-    void getActionById(@PathVariable("name") String actionName){
-
+    @GetMapping("name")
+    ActionResponse getActionByName(@RequestParam(required = true) String action){
+        return service.findActionByName(action);
     }
 
-    @DeleteMapping("{id}/delete")
-    void deleteAction(@PathVariable("id") String id){
-
+    @DeleteMapping("delete")
+    void deleteAction(@RequestParam(required = true) String action){
+        service.deleteAction(action);
     }
 
-    @PostMapping()
+    @PostMapping("add")
     void addAction(@RequestBody ActionRequest action){
         service.createAction(action);
     }
 
-    @PutMapping()
+    @PatchMapping("replace")
     void replaceAction(@RequestBody ActionRequest action){
-
+        service.updateAction(action);
     }
 
 }

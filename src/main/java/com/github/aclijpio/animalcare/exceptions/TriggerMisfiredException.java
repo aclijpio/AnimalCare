@@ -3,5 +3,5 @@ package com.github.aclijpio.animalcare.exceptions;
 import lombok.experimental.StandardException;
 
 @StandardException
-public class ActionNotFoundException extends ActionException{
+public class TriggerMisfiredException extends RuntimeException {
 }

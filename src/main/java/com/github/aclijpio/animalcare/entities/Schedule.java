@@ -4,13 +4,12 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "schedules")
@@ -25,6 +24,32 @@ public class Schedule {
     @ElementCollection
     @CollectionTable(name = "schedule_triggers",
             joinColumns = @JoinColumn(name = "schedule_id"))
-    @Column(name = "trigger_name", unique = true)
+    @Column(name = "trigger_name")
     private List<String> triggerName;
+
+    public void addTriggerName(String triggerName) {
+        this.triggerName.add(triggerName);
+    }
+    public Schedule removeTriggerName(String triggerName) {
+        this.triggerName.remove(triggerName);
+        return this;
+    }
+    public void setCreatedDateNow(){
+        this.createdDate = LocalDateTime.now();
+    }
+
+    public Schedule() {
+        this.triggerName = new ArrayList<>();
+    }
+    public static Schedule copyOf(Schedule original){
+        Schedule copy = new Schedule();
+        copy.setId(original.getId());
+        copy.setCreatedDate(original.getCreatedDate());
+
+        List<String> triggerNames =  new ArrayList<>(original.getTriggerName());
+        copy.setTriggerName(triggerNames);
+        return copy;
+    }
 }
+
+

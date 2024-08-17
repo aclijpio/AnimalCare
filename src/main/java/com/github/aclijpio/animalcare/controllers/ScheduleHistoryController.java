@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/histories")
+@RequestMapping("histories")
 public class ScheduleHistoryController {
 
     private final ScheduleHistoryService service;
@@ -26,8 +26,9 @@ public class ScheduleHistoryController {
     ScheduleHistoryDto getScheduleHistoryById(@PathVariable("id") Long id) {
         return service.getScheduleHistoryById(id);
     }
-
-
-
+    @PostMapping("commit")
+    void commitScheduleHistory() {
+        service.commitScheduleHistory();
+    }
 
 }

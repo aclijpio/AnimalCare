@@ -1,4 +1,4 @@
-package com.github.aclijpio.animalcare.exceptions;
+package com.github.aclijpio.animalcare.exceptions.action;
 
 import lombok.experimental.StandardException;
 

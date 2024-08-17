@@ -9,4 +9,5 @@ public interface ScheduleHistoryService {
     List<ScheduleHistoryDto> getAllScheduleHistory();
     ScheduleHistoryDto getScheduleHistoryById(Long id);
     List<ScheduleHistoryDto> getAllScheduleHistoryByDate(LocalDate date);
+    void commitScheduleHistory();
 }
