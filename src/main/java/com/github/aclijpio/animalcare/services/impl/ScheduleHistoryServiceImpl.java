@@ -39,8 +39,8 @@ public class ScheduleHistoryServiceImpl implements ScheduleHistoryService {
 
     @Override
     public List<ScheduleHistoryDto> getAllScheduleHistoryByDate(LocalDate date) {
-        LocalDate end = LocalDate.now();
-        List<ScheduleHistory> histories =  historyRepository.findAllByDateBetween(date, end);
+        LocalDate end = date.plusDays(1);
+        List<ScheduleHistory> histories = historyRepository.findAllByDateBetween(date, end);
         return mapper.toDtoList(histories);
     }
 

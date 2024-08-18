@@ -15,7 +15,7 @@ spring:
   quartz:
     job-store-type: jdbc
     jdbc:
-      initialize-schema: embedded
+      initialize-schema: always
     properties:
       org:
         quartz:
@@ -35,7 +35,7 @@ spring:
     auto-startup: true
 logging.level.org.quartz : DEBUG
 server:
-  port: 8086
+  port: 8080
 eureka:
   client:
     enabled: false
