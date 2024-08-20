@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: animal-care
+  profiles:
+    active: default
+  cloud:
+    config:
+      uri: http://localhost:8060/
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8061/eureka/
+server:
+  port: 8081

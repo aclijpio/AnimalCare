@@ -1,5 +1,6 @@
 package com.github.aclijpio.animalcare.controllers;
 
+import com.github.aclijpio.animalcare.exceptions.ScheduleNotFoundException;
 import com.github.aclijpio.animalcare.exceptions.action.ActionCreationException;
 import com.github.aclijpio.animalcare.exceptions.action.ActionNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,11 @@ public class ExceptionController {
     }
     @ExceptionHandler(ActionNotFoundException.class)
     public ResponseEntity<String> handleActionNotFoundException(ActionNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(e.getMessage());
+    }
+    @ExceptionHandler(ScheduleNotFoundException.class)
+    public ResponseEntity<String> handleScheduleNotFoundException(ScheduleNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(e.getMessage());
     }

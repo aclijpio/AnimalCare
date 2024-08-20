@@ -8,8 +8,9 @@ services:
       - POSTGRES_USER=postgres
     ports:
       - '5435:5432'
-    volumes:
-      - ./data/init/schema.sql:/docker-entrypoint-initdb.d/schema.sql
-      - pgdata:/var/lib/postgresql/data
-volumes:
-  pgdata:
+  animalcare:
+    image: animalcare
+    ports:
+      - "8086:8081"
+    depends_on:
+      - postgres

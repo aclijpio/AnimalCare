@@ -198,7 +198,7 @@ public class ScheduleActionServiceImpl implements ScheduleActionService {
                 .forJob(jobDetail)
                 .withIdentity(action.name())
                 .withSchedule(CronScheduleBuilder.cronSchedule(CronUtil.UTIL.convertLocalTimeToCron(action.time())))
-                .withDescription(action.description())
+                .withDescription(action.status())
                 .build();
     }
 

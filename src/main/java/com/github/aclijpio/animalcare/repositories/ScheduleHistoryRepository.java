@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ScheduleHistoryRepository extends JpaRepository<ScheduleHistory, Long> {
-
     List<ScheduleHistory> findAllByDateBetween(LocalDate first, LocalDate second);
     Optional<ScheduleHistory> findFirstBySchedule(Schedule schedule);
     boolean existsByScheduleId(Long schedule_id);
@@ -19,4 +18,19 @@ public interface ScheduleHistoryRepository extends JpaRepository<ScheduleHistory
             "JOIN sh.schedule s " +
             "WHERE s.id = :scheduleId AND :triggerName MEMBER OF s.triggerName")
     boolean existsByScheduleTriggerName(Long scheduleId, String triggerName);
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

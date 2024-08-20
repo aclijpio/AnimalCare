@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class SchedulerConfig {
     @Bean
     public JobDetail jobDetail() {
-        return JobBuilder.newJob(CustomJob.class)
+        return JobBuilder.newJob(ChangeStatusBySchedule.class)
                 .withIdentity("customJob")
                 .storeDurably()
                 .build();
