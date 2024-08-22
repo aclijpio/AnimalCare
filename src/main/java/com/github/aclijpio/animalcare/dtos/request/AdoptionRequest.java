@@ -1,7 +1,5 @@
 package com.github.aclijpio.animalcare.dtos.request;
 
-import lombok.Data;
-
 import java.time.LocalDate;
 
 
