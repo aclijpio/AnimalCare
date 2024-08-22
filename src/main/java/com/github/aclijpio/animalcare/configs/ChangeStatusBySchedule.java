@@ -5,13 +5,13 @@ import lombok.RequiredArgsConstructor;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.stereotype.Component;
 
-import java.time.LocalTime;
-
+@Component
 @RequiredArgsConstructor
 public class ChangeStatusBySchedule implements Job {
 
-    private AnimalsStatusClient statusClient;
+    private final AnimalsStatusClient statusClient;
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {

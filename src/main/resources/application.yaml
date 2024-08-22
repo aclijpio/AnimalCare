@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5435/animalCare
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8061/eureka/

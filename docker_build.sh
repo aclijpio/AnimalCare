@@ -11,7 +11,7 @@ fi
 
 echo "The file found."
 
-docker build --build-arg JAR_FILE="$project_build_fileName" -t animalcare -f Dockerfile .
+docker build --build-arg JAR_FILE="$project_build_fileName" -t animalcare:0.0.1 -f Dockerfile .
 
 echo "Docker image built successfully."
 

@@ -1,16 +1,105 @@
-
 services:
-  postgres:
-    image: 'postgres:latest'
-    environment:
-      - POSTGRES_DB=animalCare
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres
+  psql:
+    image: postgres:latest
     ports:
-      - '5435:5432'
+      - "5435:5432"
+    environment:
+      POSTGRES_DB: animalCare
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  mysqlAdoption:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: adoption
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-adoption-data:/var/lib/mysql
+
+  mysqlAnimals:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: animalsInfo
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-animals-data:/var/lib/mysql
+
+  configserver:
+    image: configserver
+    ports:
+      - "8060:8060"
+    healthcheck:
+      test: "wget -T5 -qO- http://localhost:8060/actuator/health | grep UP || exit 1"
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+  eurekaserver:
+    image: eureka
+    ports:
+      - "8061:8061"
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_CLOUD_CONFIG_URI: http://configserver:8060/
+
   animalcare:
     image: animalcare
     ports:
-      - "8086:8081"
+      - "8081:8081"
     depends_on:
-      - postgres
+      configserver:
+        condition: service_healthy
+      psql:
+        condition: service_started
+    environment:
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eurekaserver:8061/eureka/
+      SPRING_CLOUD_CONFIG_URI: http://configserver:8060/
+      SPRING_DATASOURCE_URL: jdbc:postgresql://psql:5432/animalCare
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      TZ: Europe/Moscow
+
+  adoption:
+    image: adoption
+    ports:
+      - "8083:8083"
+    depends_on:
+      configserver:
+        condition: service_healthy
+      mysqlAdoption:
+        condition: service_started
+    environment:
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eurekaserver:8061/eureka/
+      SPRING_CLOUD_CONFIG_URI: http://configserver:8060/
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqlAdoption:3306/adoption
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
+  animals:
+    image: animals
+    ports:
+      - "8082:8082"
+    depends_on:
+      configserver:
+        condition: service_healthy
+      mysqlAnimals:
+        condition: service_started
+    environment:
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eurekaserver:8061/eureka/
+      SPRING_CLOUD_CONFIG_URI: http://configserver:8060/
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqlAnimals:3306/animalsInfo
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
+volumes:
+  postgres-data:
+  mysql-adoption-data:
+  mysql-animals-data:

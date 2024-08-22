@@ -7,6 +7,7 @@ import com.github.aclijpio.animalcare.mappers.ScheduleMapper;
 import com.github.aclijpio.animalcare.repositories.ScheduleRepository;
 import com.github.aclijpio.animalcare.services.ScheduleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,25 +21,25 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleMapper mapper;
 
     @Override
-    public List<ScheduleDto> getAllSchedules() {
-        return mapper.toDtoList(repository.findAll());
+    public ResponseEntity<List<ScheduleDto>> getAllSchedules() {
+        return ResponseEntity.ok(mapper.toDtoList(repository.findAll()));
     }
 
     @Override
-    public ScheduleDto getCurrentSchedule() {
+    public ResponseEntity<ScheduleDto> getCurrentSchedule() {
         Optional<Schedule> optionalSchedule =  repository.findTopByOrderByCreatedDateDesc();
         Schedule schedule = optionalSchedule.orElseThrow(
                 () -> new ScheduleNotFoundException("Failed to find schedules.")
         );
-        return mapper.toDto(schedule);
+        return ResponseEntity.ok(mapper.toDto(schedule));
     }
 
     @Override
-    public ScheduleDto getScheduleById(Long id) {
+    public ResponseEntity<ScheduleDto> getScheduleById(Long id) {
         Optional<Schedule> optionalSchedule =  repository.findById(id);
         Schedule schedule = optionalSchedule.orElseThrow(
                 () -> new ScheduleNotFoundException("Failed to find schedules.")
         );
-        return mapper.toDto(schedule);
+        return ResponseEntity.ok(mapper.toDto(schedule));
     }
 }

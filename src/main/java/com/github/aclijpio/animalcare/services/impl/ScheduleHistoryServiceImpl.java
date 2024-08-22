@@ -10,6 +10,7 @@ import com.github.aclijpio.animalcare.repositories.ScheduleRepository;
 import com.github.aclijpio.animalcare.services.ScheduleHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -45,6 +46,7 @@ public class ScheduleHistoryServiceImpl implements ScheduleHistoryService {
     }
 
     @Override
+    @Transactional
     public void commitScheduleHistory() {
         Optional<Schedule> optionalSchedule = scheduleRepository.findTopByOrderByCreatedDateDesc();
 

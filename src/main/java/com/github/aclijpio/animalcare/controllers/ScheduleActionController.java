@@ -1,9 +1,12 @@
 package com.github.aclijpio.animalcare.controllers;
 
 import com.github.aclijpio.animalcare.dtos.request.ActionRequest;
+import com.github.aclijpio.animalcare.dtos.request.AnimalRequest;
 import com.github.aclijpio.animalcare.dtos.response.ActionResponse;
+import com.github.aclijpio.animalcare.dtos.response.RecommendationResponse;
 import com.github.aclijpio.animalcare.services.ScheduleActionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,43 +19,48 @@ public class ScheduleActionController {
     private final ScheduleActionService service;
 
     @GetMapping
-    List<ActionResponse> getAllActions() {
+    ResponseEntity<List<ActionResponse>> getAllActions() {
         return service.getAllActions();
     }
 
     @GetMapping("current")
-    ActionResponse getCurrentActionSchedule(){
+    ResponseEntity<ActionResponse> getCurrentAction(){
         return service.getCurrentAction();
     }
 
     @GetMapping("prev")
-    ActionResponse getPreviousActionSchedule(){
+    ResponseEntity<ActionResponse> getPreviousAction(){
         return service.getPreviousAction();
     }
 
     @GetMapping("next")
-    ActionResponse getNextActionSchedule(){
+    ResponseEntity<ActionResponse> getNextAction(){
         return service.getNextAction();
     }
 
     @GetMapping("name")
-    ActionResponse getActionByName(@RequestParam(required = true) String action){
+    ResponseEntity<ActionResponse> getActionByName(@RequestParam(required = true) String action){
         return service.findActionByName(action);
     }
 
     @DeleteMapping("delete")
-    void deleteAction(@RequestParam(required = true) String action){
+    ResponseEntity<Void> deleteAction(@RequestParam(required = true) String action){
         service.deleteAction(action);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("add")
-    void addAction(@RequestBody ActionRequest action){
-        service.createAction(action);
+    ResponseEntity<ActionResponse> addAction(@RequestBody ActionRequest action){
+        return service.createAction(action);
     }
 
     @PatchMapping("replace")
-    void replaceAction(@RequestBody ActionRequest action){
+    ResponseEntity<Void> replaceAction(@RequestBody ActionRequest action){
         service.updateAction(action);
+        return ResponseEntity.ok().build();
     }
-
+    @PostMapping("recom")
+    public RecommendationResponse getRecommendation(@RequestBody AnimalRequest animalRequest) {
+        return service.getRecommendation(animalRequest);
+    }
 }
